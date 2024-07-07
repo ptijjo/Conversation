@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  box-sizing: border-box;
+}
+
+.bg-primaire{
+  background-color: #9356dc;
+}
+
+.bg-gradiant{
+  background-image: linear-gradient(#ff79da,#9356dc);
+  color: white;
+}
+
+.bg-fond{
+  background-color:#F6F6F6;
+}
+
+.bg-fond-fonce{
+  background-color: #a3a3a3;
+}
+
+.icone-chargement{
+  width: 100px;
+  height: 100px;
+  border: 6px dashed #9356dc;
+    border-top-color: #ff79da;
+    border-radius: 50%;
+    animation: chargement 2s linear infinite;
+  }
+    
+  @keyframes chargement {
+      0%{
+        transform: rotate(0deg);
+      }
+      30%{
+        transform: rotate(260deg);
+      }
+      100%{
+        transform: rotate(360deg);
+    }    
+  }

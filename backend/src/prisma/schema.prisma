@@ -17,12 +17,65 @@ enum Role {
 }
 
 model User {
-  id              String @id @default(auto()) @map("_id") @db.ObjectId
-  email           String @unique
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  email           String         @unique
   password        String
-  pseudo          String @unique
+  pseudo          String         @unique
   photo_profil    String
-  role            Role   @default(user)
+  role            Role           @default(user)
   created_at      String
-  last_connection String @default("")
+  last_connection String         @default("")
+  post            Post[]
+  like            Like[]
+  commentaire     Commentaire[]
+  conversation    Conversation[] @relation(name: "Creator")
+  participants    Conversation[] @relation(name: "Participant")
+}
+
+model Post {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  media       String?
+  authorId    String        @db.ObjectId
+  author      User          @relation(fields: [authorId], references: [id])
+  created_at  String
+  like        Like[]
+  commentaire Commentaire[]
+}
+
+model Like {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  status      Boolean @default(false)
+  authorId    String  @db.ObjectId
+  author      User    @relation(fields: [authorId], references: [id])
+  postLike_id String  @db.ObjectId
+  postLike    Post    @relation(fields: [postLike_id], references: [id])
+}
+
+model Commentaire {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  body       String
+  authorId   String @db.ObjectId
+  author     User   @relation(fields: [authorId], references: [id])
+  postSendId String @db.ObjectId
+  postSend   Post   @relation(fields: [postSendId], references: [id])
+  created_at String
+}
+
+model Conversation {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  authorId      String    @db.ObjectId
+  author        User      @relation(name: "Creator", fields: [authorId], references: [id])
+  participantId String    @db.ObjectId
+  participant   User      @relation(name: "Participant", fields: [participantId], references: [id])
+  created_at    String
+  messages      Message[]
+}
+
+model Message {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  body           String
+  created_at     String
+  conversationId String       @db.ObjectId
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
 }
